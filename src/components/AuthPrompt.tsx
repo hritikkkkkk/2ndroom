@@ -1,6 +1,5 @@
-import { useState } from 'react'
-
-const DISMISS_KEY = '2ndroom:auth-prompt-dismissed'
+import type { User } from '@supabase/supabase-js'
+import { supabase } from '../lib/supabase'
 
 const GOOGLE_ICON = (
   <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
@@ -11,30 +10,29 @@ const GOOGLE_ICON = (
   </svg>
 )
 
-/**
- * Floating bottom banner — matches the live site's auth.js implementation.
- * Auth is visual-only in local dev (Netlify Identity requires a deployed Netlify site).
- */
-export default function AuthPrompt() {
-  const [visible, setVisible] = useState(
-    () => !sessionStorage.getItem(DISMISS_KEY),
-  )
-  const [signedIn, setSignedIn] = useState(false)
-  const [userLabel, setUserLabel] = useState('')
+interface AuthPromptProps {
+  user: User | null
+  dismissed: boolean
+  onDismiss: () => void
+  onSignOut: () => void
+}
 
-  if (signedIn) {
+export default function AuthPrompt({ user, dismissed, onDismiss, onSignOut }: AuthPromptProps) {
+  // ── Signed-in state: status pill top-right ──────────────────────────────────
+  if (user) {
+    const label =
+      (user.user_metadata?.full_name as string | undefined) ||
+      (user.user_metadata?.name as string | undefined) ||
+      user.email ||
+      'User'
+
     return (
       <div className="auth-status">
-        <span>Signed in as {userLabel}</span>
+        <span>Signed in as {label}</span>
         <button
           type="button"
           className="auth-status__signout"
-          onClick={() => {
-            setSignedIn(false)
-            setUserLabel('')
-            sessionStorage.removeItem(DISMISS_KEY)
-            setVisible(true)
-          }}
+          onClick={onSignOut}
         >
           Sign out
         </button>
@@ -42,19 +40,18 @@ export default function AuthPrompt() {
     )
   }
 
-  if (!visible) return null
+  // ── Not signed in and banner dismissed ─────────────────────────────────────
+  if (dismissed) return null
 
-  const handleDismiss = () => {
-    sessionStorage.setItem(DISMISS_KEY, '1')
-    setVisible(false)
-  }
-
-  const handleGoogleSignIn = () => {
-    // In a Netlify-deployed environment, this would call oauthLogin('google').
-    // Locally, simulate a signed-in state for visual demonstration.
-    setVisible(false)
-    setUserLabel('Hritik')
-    setSignedIn(true)
+  // ── Sign-in banner ─────────────────────────────────────────────────────────
+  const handleGoogleSignIn = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    })
+    // Supabase redirects the browser — no further code runs here
   }
 
   return (
@@ -74,7 +71,7 @@ export default function AuthPrompt() {
         type="button"
         className="auth-banner__close-btn"
         aria-label="Dismiss"
-        onClick={handleDismiss}
+        onClick={onDismiss}
       >
         &times;
       </button>

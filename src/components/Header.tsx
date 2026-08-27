@@ -3,9 +3,10 @@ import { isSoundEnabled, toggleSound, unlockAudio } from '../lib/audio'
 
 interface HeaderProps {
   onMenuToggle: () => void
+  userName: string
 }
 
-export default function Header({ onMenuToggle }: HeaderProps) {
+export default function Header({ onMenuToggle, userName }: HeaderProps) {
   const hour = new Date().getHours()
   const greeting =
     hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
@@ -22,7 +23,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
       <div className="header__logo">2ndroom.</div>
 
       <div className="header__center">
-        {greeting}, Hritik.
+        {greeting}, {userName}.
       </div>
 
       <div className="header__right">

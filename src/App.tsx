@@ -6,6 +6,7 @@ import Hero from './components/Hero'
 import Session from './components/Session'
 import WaveBackground from './components/WaveBackground'
 import AuthPrompt from './components/AuthPrompt'
+import FeedbackWidget from './components/FeedbackWidget'
 import {
   loadTopicState,
   saveTopicState,
@@ -83,8 +84,20 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = view === 'session' ? 'auto' : 'hidden'
-    return () => { document.body.style.overflow = '' }
+    const update = () => {
+      if (view === 'session') {
+        document.body.style.overflow = 'auto'
+      } else {
+        // On mobile (≤768px), allow scrolling for stacked layout
+        document.body.style.overflow = window.innerWidth <= 768 ? 'auto' : 'hidden'
+      }
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('resize', update)
+    }
   }, [view])
 
   const handleSpin = (topicId: string, duration: number | null) => {
@@ -144,6 +157,8 @@ export default function App() {
         onDismiss={handleDismiss}
         onSignOut={handleSignOut}
       />
+
+      <FeedbackWidget userId={user?.id ?? null} />
     </Fragment>
   )
 }

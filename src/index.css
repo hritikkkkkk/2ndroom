@@ -967,7 +967,11 @@ body {
   .session__back {
     position: static;
     margin-bottom: 24px;
-    align-self: flex-start;
+    align-self: center;
+  }
+
+  .session__meta {
+    text-align: center;
   }
 
   .session__inner {

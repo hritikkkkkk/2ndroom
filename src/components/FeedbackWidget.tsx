@@ -18,17 +18,42 @@ export default function FeedbackWidget({ userId }: FeedbackWidgetProps) {
       return
     }
 
+    console.log('Attempting to submit feedback...')
+    console.log('User ID:', userId)
+    console.log('Message length:', trimmed.length)
+
+    // Check if user is authenticated
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+    console.log('Current session:', session)
+    console.log('Session error:', sessionError)
+
+    if (!session) {
+      setErrorMsg('You must be logged in to submit feedback.')
+      setStatus('error')
+      return
+    }
+
     setStatus('submitting')
     setErrorMsg('')
 
     try {
-      const { error } = await supabase.from('feedback').insert({
+      const { data, error } = await supabase.from('feedback').insert({
         user_id: userId,
         message: trimmed,
       })
 
-      if (error) throw error
+      if (error) {
+        console.error('Supabase feedback insert error:', error)
+        console.error('Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+        })
+        throw error
+      }
 
+      console.log('Feedback submitted successfully:', data)
       setStatus('success')
       setMessage('')
       
@@ -39,7 +64,9 @@ export default function FeedbackWidget({ userId }: FeedbackWidgetProps) {
       }, 1500)
     } catch (err) {
       setStatus('error')
-      setErrorMsg(err instanceof Error ? err.message : 'Failed to submit feedback')
+      const errorMessage = err instanceof Error ? err.message : 'Failed to submit feedback'
+      setErrorMsg(errorMessage)
+      console.error('Feedback submission failed:', err)
     }
   }
 

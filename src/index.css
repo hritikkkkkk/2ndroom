@@ -585,8 +585,8 @@ body {
 .auth-gate__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
   animation: auth-gate-fade-in 0.3s ease;
 }
 

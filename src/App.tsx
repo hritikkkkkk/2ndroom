@@ -6,6 +6,7 @@ import Hero from './components/Hero'
 import Session from './components/Session'
 import WaveBackground from './components/WaveBackground'
 import AuthPrompt from './components/AuthPrompt'
+import AuthGate from './components/AuthGate'
 import FeedbackWidget from './components/FeedbackWidget'
 import {
   loadTopicState,
@@ -126,6 +127,13 @@ export default function App() {
   // avoids a flash where the banner shows briefly before the session loads.
   if (!authReady) return null
 
+  // ── Authentication Gate ────────────────────────────────────────────────────
+  // If user is not authenticated, show auth gate and block access
+  if (!user) {
+    return <AuthGate />
+  }
+
+  // ── Authenticated App ──────────────────────────────────────────────────────
   return (
     <Fragment>
       <WaveBackground isMobile={isMobile} />

@@ -26,3 +26,12 @@ Learn → Memorize → Test → Repeat
 Explore → Think → Learn → Apply
 
 It is not intended to replace formal education. Instead, it acts as a second room for learning — a space outside the academic environment where curiosity can take over.
+
+🛠️ Tech Stack
+Technology	Purpose
+React	Frontend
+JavaScript / TypeScript	Application logic
+Supabase	Authentication & backend services
+Google Authentication	User login
+CSS	UI & animations
+Netlify	Deployment

@@ -15,3 +15,14 @@ The idea is simple: education doesn't stop at classrooms, assignments, and exams
 📊 Topic Progress — Structured learning experiences around individual topics.
 🌐 Responsive Design — Works across desktop and mobile devices.
 🌑 Immersive Visual Experience — Minimal black-and-white interface with animated 3D-style visual elements.
+🧩 Why 2ndroom?
+
+Traditional education often focuses on:
+
+Learn → Memorize → Test → Repeat
+
+2ndroom is built around a different approach:
+
+Explore → Think → Learn → Apply
+
+It is not intended to replace formal education. Instead, it acts as a second room for learning — a space outside the academic environment where curiosity can take over.

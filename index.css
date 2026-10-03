@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #2294ff;
+    color: #FFFFFF;
+    overflow-x: hidden;
+  }
+}
+
+.font-bebas {
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+.bg-radial-hero {
+  background: radial-gradient(circle at 50% 50%, #FF7E27 0%, #FF5722 75%, #F44336 100%);
+}
+
+@keyframes floatSneaker {
+  0%, 100% {
+    transform: translateY(0px) rotate(-3deg) scale(1);
+  }
+  50% {
+    transform: translateY(-18px) rotate(-1deg) scale(1.02);
+  }
+}
+
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-25px) translateX(15px);
+    opacity: 1;
+  }
+}
+
+.animate-float-sneaker {
+  animation: floatSneaker 6s ease-in-out infinite;
+}
+
+.animate-float-particle {
+  animation: floatParticle 4s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FF5722;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}

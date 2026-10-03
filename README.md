@@ -23,6 +23,14 @@ Learn → Memorize → Test → Repeat
 
 2ndroom is built around a different approach:
 
+
+.
+.
+.
+.
+.
+
+
 Explore → Think → Learn → Apply
 
 It is not intended to replace formal education. Instead, it acts as a second room for learning — a space outside the academic environment where curiosity can take over.

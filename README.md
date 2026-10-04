@@ -22,14 +22,31 @@ Traditional education often focuses on:
 Learn → Memorize → Test → Repeat
 
 2ndroom is built around a different approach:
+🌍 Live Project
 
+2ndroom:
+https://2ndroom.netlify.app/
 
-.
-.
-.
-.
-.
+📈 Future Plans
 
+More learning topics
+
+User learning progress
+
+Personalized topic recommendations
+
+Mobile application
+
+Push notifications
+
+Expanded feedback and community features
+
+More interactive learning experiences
+.
+.
+.
+.
+.
 
 Explore → Think → Learn → Apply
 
@@ -43,9 +60,6 @@ Supabase	Authentication & backend services
 Google Authentication	User login
 CSS	UI & animations
 Netlify	Deployment
-/////////////////////.
-
-.
 .
 .....
 

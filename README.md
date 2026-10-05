@@ -60,17 +60,3 @@ Supabase	Authentication & backend services
 Google Authentication	User login
 CSS	UI & animations
 Netlify	Deployment
-.
-.....
-
-..
-
-'
-'
-
-'
-'
-'''
-
-
-...vvvvv

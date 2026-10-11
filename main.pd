@@ -7,3 +7,14 @@ class Solution {
             int current = value(s.charAt(i));
 
           
+  if (i + 1 < s.length() && current < value(s.charAt(i + 1))) {
+                result -= current;
+            } else {
+                result += current;
+            }
+        }
+
+        return result;
+    }
+
+   

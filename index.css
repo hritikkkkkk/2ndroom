@@ -75,3 +75,8 @@ class Solution:
  ans = 0
 
        
+ for _ in range(k):
+            x = 0
+
+            for bit in range(31):
+               

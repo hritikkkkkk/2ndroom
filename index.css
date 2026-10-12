@@ -80,3 +80,8 @@ class Solution:
 
             for bit in range(31):
                
+ if count[bit] > 0:
+                    x |= (1 << bit)
+                    count[bit] -= 1
+
+       

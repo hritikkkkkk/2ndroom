@@ -84,4 +84,7 @@ class Solution:
                     x |= (1 << bit)
                     count[bit] -= 1
 
-       
+            ans = (ans + x * x) % MOD
+
+        
+      

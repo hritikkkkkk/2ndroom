@@ -72,5 +72,6 @@ class Solution:
             for bit in range(31):
                 if num & (1 << bit):
                     count[bit] += 1
+ ans = 0
 
        

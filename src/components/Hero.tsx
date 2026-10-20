@@ -7,9 +7,10 @@ const TIMER_OPTIONS = [5, 10, 15] as const
 
 interface HeroProps {
   onSpin: (topicId: string, duration: number | null) => void
+  completedTopicIds: string[]
 }
 
-export default function Hero({ onSpin }: HeroProps) {
+export default function Hero({ onSpin, completedTopicIds }: HeroProps) {
   const [spinTrigger, setSpinTrigger]         = useState(0)
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null)
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -107,6 +108,7 @@ export default function Hero({ onSpin }: HeroProps) {
           spinTrigger={spinTrigger}
           selectedCategory={selectedCategory}
           onSpin={handleTopicSelected}
+          completedTopicIds={completedTopicIds}
         />
       </div>
     </section>

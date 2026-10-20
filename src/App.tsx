@@ -16,6 +16,10 @@ import {
   recordActivity,
   type TopicStatus,
 } from './lib/storage'
+import {
+  getUserCompletedTopicIds,
+  markTopicAsCompleted,
+} from './lib/topicTracking'
 
 const DISMISS_KEY = '2ndroom:auth-prompt-dismissed'
 
@@ -28,6 +32,7 @@ export default function App() {
   const [dismissed, setDismissed] = useState(
     () => !!sessionStorage.getItem(DISMISS_KEY),
   )
+  const [completedTopicIds, setCompletedTopicIds] = useState<string[]>([])
 
   // Derive display name from the Supabase user's Google metadata
   const userName: string =
@@ -39,18 +44,32 @@ export default function App() {
   // Load session on mount, then subscribe to auth changes
   useEffect(() => {
     // 1. Get existing session (persisted across refreshes by Supabase automatically)
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setUser(session?.user ?? null)
+      
+      // Load user's completed topics from Supabase if authenticated
+      if (session?.user) {
+        const completedIds = await getUserCompletedTopicIds()
+        setCompletedTopicIds(completedIds)
+      }
+      
       setAuthReady(true)
     })
 
     // 2. Subscribe to future auth events (login / logout / token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setUser(session?.user ?? null)
       if (session?.user) {
         // Clear banner dismiss on fresh login so the status pill shows
         sessionStorage.removeItem(DISMISS_KEY)
         setDismissed(false)
+        
+        // Load user's completed topics from Supabase
+        const completedIds = await getUserCompletedTopicIds()
+        setCompletedTopicIds(completedIds)
+      } else {
+        // User logged out - clear completed topics
+        setCompletedTopicIds([])
       }
     })
 
@@ -107,7 +126,17 @@ export default function App() {
     setView('session')
   }
 
-  const handleTopicComplete = (topicId: string) => {
+  const handleTopicComplete = async (topicId: string) => {
+    // Save to Supabase for authenticated users
+    if (user) {
+      const success = await markTopicAsCompleted(topicId)
+      if (success) {
+        // Update local state to include this completed topic
+        setCompletedTopicIds((prev) => [...prev, topicId])
+      }
+    }
+    
+    // Also save to localStorage for backwards compatibility
     const next = { ...topicState, [topicId]: 'completed' as TopicStatus }
     setTopicState(next)
     saveTopicState(next)
@@ -153,7 +182,7 @@ export default function App() {
           <Header onMenuToggle={() => {}} userName={userName} />
           <main className="main-content">
             <div className="viewport-section">
-              <Hero onSpin={handleSpin} />
+              <Hero onSpin={handleSpin} completedTopicIds={completedTopicIds} />
             </div>
           </main>
         </div>

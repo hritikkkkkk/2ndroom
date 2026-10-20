@@ -15,9 +15,10 @@ interface TopicWheelProps {
   spinTrigger: number       // increment to trigger a spin
   selectedCategory: string  // 'all' or a category name
   onSpin: (topicId: string) => void
+  completedTopicIds: string[]  // list of completed topic IDs to filter out
 }
 
-export default function TopicWheel({ spinTrigger, selectedCategory, onSpin }: TopicWheelProps) {
+export default function TopicWheel({ spinTrigger, selectedCategory, onSpin, completedTopicIds }: TopicWheelProps) {
   const containerRef  = useRef<HTMLDivElement>(null)
   const itemRefs      = useRef<(HTMLDivElement | null)[]>([])
   const posRef        = useRef(0)           // fractional scroll position (topic index)
@@ -30,17 +31,25 @@ export default function TopicWheel({ spinTrigger, selectedCategory, onSpin }: To
   const onSpinRef     = useRef(onSpin)
   onSpinRef.current   = onSpin
 
-  // ── Update filtered topic list when category changes ────────────────────────
+  // ── Update filtered topic list when category or completed topics change ────
   useEffect(() => {
-    if (!selectedCategory || selectedCategory === 'all') {
-      topicsRef.current = ALL_TOPICS
-    } else {
-      const filtered = ALL_TOPICS.filter((t) => t.category === selectedCategory)
-      topicsRef.current = filtered.length > 0 ? filtered : ALL_TOPICS
+    let filtered = ALL_TOPICS
+    
+    // Filter by category
+    if (selectedCategory && selectedCategory !== 'all') {
+      filtered = filtered.filter((t) => t.category === selectedCategory)
     }
+    
+    // Filter out completed topics for authenticated users
+    if (completedTopicIds.length > 0) {
+      filtered = filtered.filter((t) => !completedTopicIds.includes(t.id))
+    }
+    
+    // If all topics are completed, show a message or use all topics
+    topicsRef.current = filtered.length > 0 ? filtered : ALL_TOPICS
     posRef.current = 0
     prevCenterRef.current = -1
-  }, [selectedCategory])
+  }, [selectedCategory, completedTopicIds])
 
   // ── Main rAF loop — runs once, never re-created ──────────────────────────────
   useEffect(() => {

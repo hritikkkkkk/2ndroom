@@ -45,7 +45,8 @@ export default function TopicWheel({ spinTrigger, selectedCategory, onSpin, comp
       filtered = filtered.filter((t) => !completedTopicIds.includes(t.id))
     }
     
-    // If all topics are completed, show a message or use all topics
+    // If all topics in current filter are completed, fall back to all topics
+    // This prevents an empty wheel when user has completed all topics in a category
     topicsRef.current = filtered.length > 0 ? filtered : ALL_TOPICS
     posRef.current = 0
     prevCenterRef.current = -1
